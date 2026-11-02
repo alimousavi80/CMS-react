@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 import Users from "./pages/Users";
 import RootLayout from "./components/layouts/RootLayout";
 import Courses from "./pages/Courses";
@@ -51,7 +51,7 @@ const homePageLoader = async () => {
   return { coursesData, userData };
 };
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <RootLayout />,
