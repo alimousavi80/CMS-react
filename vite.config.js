@@ -5,5 +5,5 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/https://alimousavi80.github.io/CMS-react/",
+  base: "/CMS-react/",
 });
