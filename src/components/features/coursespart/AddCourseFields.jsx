@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AddCourseFields = ({ newCourse, onChange }) => {
-  const radioInputsHandler = (e) => {
-    console.log(e.target.checked);
-  };
-
   const inputChangeHandler = (key, value) => {
     const Course = {
       ...newCourse,
@@ -24,6 +20,7 @@ const AddCourseFields = ({ newCourse, onChange }) => {
           onChange={(e) => {
             inputChangeHandler(e.target.name, e.target.value.trim());
           }}
+          value={newCourse.courseName}
           type="text"
           className="neu-input"
           placeholder="مثلاً: آموزش ری‌اکت"
@@ -40,6 +37,7 @@ const AddCourseFields = ({ newCourse, onChange }) => {
           onChange={(e) => {
             inputChangeHandler(e.target.name, e.target.value.trim());
           }}
+          value={newCourse.creator}
           name="creator"
           type="text"
           className="neu-input"
@@ -54,6 +52,7 @@ const AddCourseFields = ({ newCourse, onChange }) => {
           قیمت
         </label>
         <input
+          value={newCourse.price}
           onChange={(e) => {
             inputChangeHandler(e.target.name, Number(e.target.value));
           }}

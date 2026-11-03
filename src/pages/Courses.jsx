@@ -39,6 +39,16 @@ const Courses = () => {
     category: "فرانت اند",
   });
 
+  const resetNewCourse = () => {
+    setNewCourse({
+      courseName: "",
+      creator: "",
+      price: "",
+      status: "در حال ضبط",
+      category: "فرانت اند",
+    });
+  };
+
   const addNewCourseHandler = () => {
     fetch(`${BASEURL}/rest/v1/courses`, {
       method: "POST",
@@ -54,6 +64,7 @@ const Courses = () => {
         res.json().then((data) => {
           setRecivedData((prev) => [data[0], ...prev]);
         });
+        resetNewCourse();
       } else {
       }
     });
@@ -76,28 +87,27 @@ const Courses = () => {
   };
 
   const updateCourseHandler = (courseId) => {
-    const data = {
-      courseName: courseName.value.trim(),
-      creator: courseCreator.value.trim(),
-      price: +coursePrice.value.trim(),
-      status: status,
-      category: "فرانت اند",
-    };
-
-    fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
-      method: "PATCH",
-      headers: {
-        apikey: ANONKEY,
-        Authorization: `Bearer ${ANONKEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      if (res.status === 200) {
-      } else {
-      }
-    });
+    // const data = {
+    //   courseName: courseName.value.trim(),
+    //   creator: courseCreator.value.trim(),
+    //   price: +coursePrice.value.trim(),
+    //   status: status,
+    //   category: "فرانت اند",
+    // };
+    // fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     apikey: ANONKEY,
+    //     Authorization: `Bearer ${ANONKEY}`,
+    //     "Content-Type": "application/json",
+    //     Prefer: "return=representation",
+    //   },
+    //   body: JSON.stringify(data),
+    // }).then((res) => {
+    //   if (res.status === 200) {
+    //   } else {
+    //   }
+    // });
   };
 
   return (
@@ -132,6 +142,7 @@ const Courses = () => {
                   title={"افزودن دوره جدید"}
                   mainBtn={"افزودن"}
                   onSubmit={addNewCourseHandler}
+                  onClose={resetNewCourse}
                 >
                   <AddCourseFields
                     newCourse={newCourse}
@@ -183,7 +194,12 @@ const Courses = () => {
                           {item.created_at.slice(11, 19)}
                         </TableBodyCell>
                         <TableBodyCell>
-                          <UpdateCourseBtn data={item} />
+                          <UpdateCourseBtn
+                            onUpdate={updateCourseHandler}
+                            data={item}
+                            newCourse={newCourse}
+                            onChange={setNewCourse}
+                          />
                         </TableBodyCell>
                         <TableBodyCell>
                           <RemoveCourseBtn

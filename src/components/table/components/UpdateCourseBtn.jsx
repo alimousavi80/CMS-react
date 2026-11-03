@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import Modal from "../../common/Modal";
 import { FiEdit } from "react-icons/fi";
 
-const UpdateCourseBtn = ({ data }) => {
-  const [courseNameInput, setCourseNameInput] = useState(data.courseName);
-  const [creatorInput, setCreatorInput] = useState(data.creator);
-  const [priceInput, setPriceInput] = useState(data.price);
+const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
+  const inputChangeHandler = (key, value) => {
+    const Course = {
+      ...newCourse,
+      [key]: value,
+    };
+    onChange(Course);
+  };
 
   const Triger = () => {
     return (
@@ -14,17 +18,26 @@ const UpdateCourseBtn = ({ data }) => {
       </button>
     );
   };
+
   return (
-    <Modal Triger={<Triger />} title={"به روز رسانی دوره"} mainBtn={"ویرایش"}>
+    <Modal
+      Triger={<Triger />}
+      title={"به روز رسانی دوره"}
+      mainBtn={"ویرایش"}
+      onSubmit={onUpdate(data.id)}
+    >
       <form id="course-form" className="flex flex-col gap-6 w-sm" novalidate>
         <div className="flex flex-col gap-2 items-start">
           <label for="course-name" className="text-sm font-medium">
             نام دوره
           </label>
           <input
+            name="courseName"
+            onChange={(e) => {
+              inputChangeHandler(e.target.name, e.target.value.trim());
+            }}
             id="course-name"
-            value={courseNameInput}
-            onChange={(e) => setCourseNameInput(e.target.value)}
+            value={data.courseName}
             type="text"
             className="neu-input"
             autoComplete="off"
@@ -37,9 +50,12 @@ const UpdateCourseBtn = ({ data }) => {
             مدرس
           </label>
           <input
+            onChange={(e) => {
+              inputChangeHandler(e.target.name, e.target.value.trim());
+            }}
+            name="creator"
             id="course-creator"
-            value={creatorInput}
-            onChange={(e) => setCreatorInput(e.target.value)}
+            value={data.creator}
             type="text"
             className="neu-input"
             autoComplete="off"
@@ -52,9 +68,11 @@ const UpdateCourseBtn = ({ data }) => {
             قیمت
           </label>
           <input
-            id="course-price"
-            value={priceInput}
-            onChange={(e) => setPriceInput(e.target.value)}
+            onChange={(e) => {
+              inputChangeHandler(e.target.name, Number(e.target.value));
+            }}
+            name="price"
+            value={data.price}
             type="text"
             inputmode="numeric"
             className="neu-input pe-16"
@@ -71,6 +89,9 @@ const UpdateCourseBtn = ({ data }) => {
           <div className="flex gap-4">
             <label>
               <input
+                onChange={(e) => {
+                  inputChangeHandler(e.target.name, e.target.value);
+                }}
                 type="radio"
                 name="status"
                 value="تکمیل شده"
@@ -86,6 +107,9 @@ const UpdateCourseBtn = ({ data }) => {
 
             <label>
               <input
+                onChange={(e) => {
+                  inputChangeHandler(e.target.name, e.target.value);
+                }}
                 type="radio"
                 name="status"
                 value="در حال ضبط"
