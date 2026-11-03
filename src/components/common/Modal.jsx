@@ -2,9 +2,20 @@ import React, { useState } from "react";
 import ModalFooter from "./components/ModalFooter";
 import ModalHeader from "./components/ModalHeader";
 
-const Modal = ({ Triger, children, title, mainBtn, onSubmit, onClose }) => {
+const Modal = ({
+  Triger,
+  children,
+  title,
+  mainBtn,
+  onSubmit,
+  onClose,
+  onOpen,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => setIsOpen(true);
+  const openModal = () => {
+    onOpen?.();
+    setIsOpen(true);
+  };
   const closeModal = () => {
     onClose?.();
     setIsOpen(false);

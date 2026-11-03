@@ -99,7 +99,9 @@ const Courses = () => {
     }).then((res) => {
       if (res.status === 200) {
         res.json().then((data) => {
-          setRecivedData((prev) => [data[0], ...prev]);
+          setRecivedData((prev) =>
+            prev.map((item) => (item.id === courseId ? data[0] : item)),
+          );
         });
         resetNewCourse();
       } else {
@@ -196,6 +198,7 @@ const Courses = () => {
                             data={item}
                             newCourse={newCourse}
                             onChange={setNewCourse}
+                            onClose={resetNewCourse}
                           />
                         </TableBodyCell>
                         <TableBodyCell>

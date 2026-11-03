@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "../../common/Modal";
 import { FiEdit } from "react-icons/fi";
 
-const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
+const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
   const inputChangeHandler = (key, value) => {
     const Course = {
       ...newCourse,
@@ -24,7 +24,19 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
       Triger={<Triger />}
       title={"به روز رسانی دوره"}
       mainBtn={"ویرایش"}
-      onSubmit={onUpdate(data.id)}
+      onSubmit={() => {
+        onUpdate(data.id);
+      }}
+      onClose={onClose}
+      onOpen={() =>
+        onChange({
+          courseName: data.courseName,
+          creator: data.creator,
+          price: data.price,
+          status: data.status,
+          category: data.category,
+        })
+      }
     >
       <form id="course-form" className="flex flex-col gap-6 w-sm" novalidate>
         <div className="flex flex-col gap-2 items-start">
@@ -34,10 +46,10 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
           <input
             name="courseName"
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value.trim());
+              inputChangeHandler(e.target.name, e.target.value);
             }}
             id="course-name"
-            value={data.courseName}
+            value={newCourse.courseName}
             type="text"
             className="neu-input"
             autoComplete="off"
@@ -51,11 +63,11 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
           </label>
           <input
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value.trim());
+              inputChangeHandler(e.target.name, e.target.value);
             }}
             name="creator"
             id="course-creator"
-            value={data.creator}
+            value={newCourse.creator}
             type="text"
             className="neu-input"
             autoComplete="off"
@@ -69,10 +81,10 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
           </label>
           <input
             onChange={(e) => {
-              inputChangeHandler(e.target.name, Number(e.target.value));
+              inputChangeHandler(e.target.name, e.target.value);
             }}
             name="price"
-            value={data.price}
+            value={newCourse.price}
             type="text"
             inputmode="numeric"
             className="neu-input pe-16"
@@ -97,7 +109,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
                 value="تکمیل شده"
                 className="peer sr-only"
                 id="complete-radio-item"
-                // {courseStatus === "تکمیل شده" ? "checked" : ""}
+                checked={newCourse.status === "تکمیل شده"}
                 required
               />
               <span className="neu-chip neu-chip-success cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent">
@@ -115,7 +127,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data }) => {
                 value="در حال ضبط"
                 className="peer sr-only"
                 id="recording-radio-item"
-                // {courseStatus === "تکمیل شده" ? "" : "checked"}
+                checked={newCourse.status === "در حال ضبط"}
               />
               <span className="neu-chip neu-chip-warning cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent">
                 در حال ضبط
