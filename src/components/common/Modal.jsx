@@ -6,7 +6,7 @@ const Modal = ({ Triger, children, title, mainBtn, onSubmit, onClose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
-    onClose();
+    onClose?.();
     setIsOpen(false);
   };
 

@@ -87,27 +87,24 @@ const Courses = () => {
   };
 
   const updateCourseHandler = (courseId) => {
-    // const data = {
-    //   courseName: courseName.value.trim(),
-    //   creator: courseCreator.value.trim(),
-    //   price: +coursePrice.value.trim(),
-    //   status: status,
-    //   category: "فرانت اند",
-    // };
-    // fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
-    //   method: "PATCH",
-    //   headers: {
-    //     apikey: ANONKEY,
-    //     Authorization: `Bearer ${ANONKEY}`,
-    //     "Content-Type": "application/json",
-    //     Prefer: "return=representation",
-    //   },
-    //   body: JSON.stringify(data),
-    // }).then((res) => {
-    //   if (res.status === 200) {
-    //   } else {
-    //   }
-    // });
+    fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
+      method: "PATCH",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(newCourse),
+    }).then((res) => {
+      if (res.status === 200) {
+        res.json().then((data) => {
+          setRecivedData((prev) => [data[0], ...prev]);
+        });
+        resetNewCourse();
+      } else {
+      }
+    });
   };
 
   return (
