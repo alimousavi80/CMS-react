@@ -11,9 +11,7 @@ const ModalFooter = ({ onClose, mainBtn, onSubmit }) => {
       <button
         onClick={submitHandler}
         type="button"
-        className={`neu-btn ${mainBtn === "ویرایش" ? "neu-chip-warning" : ""}
-        ${mainBtn === "حذف" ? "neu-chip-delete" : ""}
-        `}
+        className={` neu-btn ${mainBtn === "ویرایش" ? "neu-chip-warning" : mainBtn === "حذف" ? "neu-chip-delete" : mainBtn === "افزودن" ? "neu-chip-success" : null}`}
       >
         {mainBtn}
       </button>

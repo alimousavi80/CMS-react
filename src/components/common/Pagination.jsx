@@ -13,7 +13,7 @@ const Pagination = ({ allCourses, itemsPerPage, paginatedCoures }) => {
     const startIndex = finishIndex - itemsPerPage;
     const paginatedCourses = allCourses.slice(startIndex, finishIndex);
     paginatedCoures(paginatedCourses);
-  }, [currentCount]);
+  }, [currentCount, allCourses, itemsPerPage]);
 
   return (
     <>

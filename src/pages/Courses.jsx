@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import Table from "../components/table/Table";
 import TableHead from "../components/table/elements/TableHead";
@@ -10,6 +10,8 @@ import TableBodyCell from "../components/table/elements/TableBodyCell";
 import UpdateCourseBtn from "../components/table/components/UpdateCourseBtn";
 import RemoveCourseBtn from "../components/table/components/RemoveCourseBtn";
 import Pagination from "../components/common/Pagination";
+import Modal from "../components/common/Modal";
+import AddCourseFields from "../components/features/coursespart/AddCourseFields";
 
 const coursesTableHeaderCellData = [
   { id: 1, name: "شماره" },
@@ -26,11 +28,39 @@ const ANONKEY =
 const BASEURL = "https://yzacmxraccksppufpokc.supabase.co";
 
 const Courses = () => {
-  const recivedData = useLoaderData();
-  const [allCourses, setAllCourses] = useState([...recivedData]);
+  const allData = useLoaderData();
+  const [recivedData, setRecivedData] = useState(allData);
+  const [allCourses, setAllCourses] = useState([]);
+  const [newCourse, setNewCourse] = useState({
+    courseName: "",
+    creator: "",
+    price: "",
+    status: "در حال ضبط",
+    category: "فرانت اند",
+  });
 
-  const deleteCourseHandler = (couseId) => {
-    fetch(`${BASEURL}/rest/v1/courses?id=eq.${couseId}`, {
+  const addNewCourseHandler = () => {
+    fetch(`${BASEURL}/rest/v1/courses`, {
+      method: "POST",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(newCourse),
+    }).then((res) => {
+      if (res.status === 201) {
+        res.json().then((data) => {
+          setRecivedData((prev) => [data[0], ...prev]);
+        });
+      } else {
+      }
+    });
+  };
+
+  const deleteCourseHandler = (courseId) => {
+    fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
       method: "DELETE",
       headers: {
         apikey: ANONKEY,
@@ -39,15 +69,32 @@ const Courses = () => {
       },
     }).then((res) => {
       if (res.status === 200) {
-        const filteredCourses = allCourses.filter(
-          (item) => item.id !== couseId,
-        );
-        setAllCourses(filteredCourses);
-        // toeasNotificationtHandler("deleteCourse", "courses");
-        // receiveAllCourses().then((data) => {
-        //   let paginatedCourses = pagination(data, paginationWrapper, 5, 1);
-        //   insertHtmlTemplate(paginatedCourses, tableWrapper);
-        // });
+        setRecivedData((prev) => prev.filter((item) => item.id !== courseId));
+      } else {
+      }
+    });
+  };
+
+  const updateCourseHandler = (courseId) => {
+    const data = {
+      courseName: courseName.value.trim(),
+      creator: courseCreator.value.trim(),
+      price: +coursePrice.value.trim(),
+      status: status,
+      category: "فرانت اند",
+    };
+
+    fetch(`${BASEURL}/rest/v1/courses?id=eq.${courseId}`, {
+      method: "PATCH",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (res.status === 200) {
       } else {
       }
     });
@@ -67,32 +114,30 @@ const Courses = () => {
         {/* <!------------------------------------ main ------------------------------------> */}
 
         <main className="flex flex-col gap-8">
-          <h1 className="text-2xl font-bold">مشخصات</h1>
-
-          {/* <!-- Stats --> */}
-          <section className="grid gap-8 grid-cols-2">
-            <div className="neu-card">
-              <p className="text-sm text-ink-muted">تعداد دوره ها</p>
-              <p className="mt-2 text-3xl font-bold" id="courses-count">
-                {/* <!-- loaded from js --> */}
-              </p>
-            </div>
-            <div className="neu-card">
-              <p className="text-sm text-ink-muted">تعداد کاربران</p>
-              <p className="mt-2 text-3xl font-bold" id="users-count">
-                {/* <!-- loaded from js --> */}
-              </p>
-            </div>
-          </section>
-
           <div>
             {/* <!-- Recent content --> */}
             <section className="neu-card xl:col-span-2">
               <div className="mb-6 flex items-center justify-between gap-4">
                 <h2 className="text-lg font-semibold">دوره های اخیر</h2>
-                <button type="button" id="open-modal-btn" className="neu-btn">
-                  افزودن دوره
-                </button>
+                <Modal
+                  Triger={
+                    <button
+                      type="button"
+                      id="open-modal-btn"
+                      className="neu-btn"
+                    >
+                      افزودن دوره
+                    </button>
+                  }
+                  title={"افزودن دوره جدید"}
+                  mainBtn={"افزودن"}
+                  onSubmit={addNewCourseHandler}
+                >
+                  <AddCourseFields
+                    newCourse={newCourse}
+                    onChange={setNewCourse}
+                  />
+                </Modal>
               </div>
 
               {/* <!----------------------------------- table -----------------------------------> */}
