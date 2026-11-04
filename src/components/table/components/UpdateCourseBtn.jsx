@@ -38,9 +38,9 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
         })
       }
     >
-      <form id="course-form" className="flex flex-col gap-6 w-sm" novalidate>
+      <form id="course-form" className="flex flex-col gap-6 w-sm" noValidate>
         <div className="flex flex-col gap-2 items-start">
-          <label for="course-name" className="text-sm font-medium">
+          <label htmlFor="course-name" className="text-sm font-medium">
             نام دوره
           </label>
           <input
@@ -58,7 +58,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
         </div>
 
         <div className="flex flex-col gap-2 items-start">
-          <label for="course-creator" className="text-sm font-medium">
+          <label htmlFor="course-creator" className="text-sm font-medium">
             مدرس
           </label>
           <input
@@ -76,7 +76,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
         </div>
 
         <div className="flex flex-col gap-2 items-start">
-          <label for="course-price" className="text-sm font-medium">
+          <label htmlFor="course-price" className="text-sm font-medium">
             قیمت
           </label>
           <input
@@ -86,7 +86,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
             name="price"
             value={newCourse.price}
             type="text"
-            inputmode="numeric"
+            inputMode="numeric"
             className="neu-input pe-16"
             required
           />

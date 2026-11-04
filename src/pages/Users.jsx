@@ -50,13 +50,6 @@ const Users = () => {
   };
 
   const addNewUserHandler = () => {
-    // const userData = {
-    //   fullName: userFullName.value.trim(),
-    //   userName: userUserName.value.trim(),
-    //   role: role,
-    //   phoneNumber: +userPhoneNumber.value,
-    //   email: userEamil.value.trim(),
-    // };
     fetch(`${BASEURL}/rest/v1/users`, {
       method: "POST",
       headers: {
@@ -69,6 +62,7 @@ const Users = () => {
         ...newUser,
         fullName: newUser.fullName.trim(),
         userName: newUser.userName.trim(),
+        email: newUser.email.trim(),
         phoneNumber: Number(newUser.phoneNumber),
       }),
     }).then((res) => {
@@ -111,6 +105,7 @@ const Users = () => {
         ...newUser,
         fullName: newUser.fullName.trim(),
         userName: newUser.userName.trim(),
+        email: newUser.email.trim(),
         phoneNumber: Number(newUser.phoneNumber),
       }),
     }).then((res) => {

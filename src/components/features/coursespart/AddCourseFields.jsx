@@ -10,32 +10,32 @@ const AddCourseFields = ({ newCourse, onChange }) => {
   };
 
   return (
-    <form id="course-form" className="flex flex-col gap-5 min-w-xs" novalidate>
+    <form id="course-form" className="flex flex-col gap-5 min-w-xs" noValidate>
       <div className="flex flex-col gap-2">
-        <label for="course-name" className="text-sm font-medium">
+        <label htmlFor="course-name" className="text-sm font-medium">
           نام دوره
         </label>
         <input
           name="courseName"
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value.trim());
+            inputChangeHandler(e.target.name, e.target.value);
           }}
           value={newCourse.courseName}
           type="text"
           className="neu-input"
           placeholder="مثلاً: آموزش ری‌اکت"
-          autocomplete="off"
+          autoComplete="off"
           required
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <label for="course-creator" className="text-sm font-medium">
+        <label htmlFor="course-creator" className="text-sm font-medium">
           مدرس
         </label>
         <input
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value.trim());
+            inputChangeHandler(e.target.name, e.target.value);
           }}
           value={newCourse.creator}
           name="creator"
@@ -48,17 +48,17 @@ const AddCourseFields = ({ newCourse, onChange }) => {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label for="course-price" className="text-sm font-medium">
+        <label htmlFor="course-price" className="text-sm font-medium">
           قیمت
         </label>
         <input
           value={newCourse.price}
           onChange={(e) => {
-            inputChangeHandler(e.target.name, Number(e.target.value));
+            inputChangeHandler(e.target.name, e.target.value);
           }}
           name="price"
           type="number"
-          inputmode="numeric"
+          inputMode="numeric"
           className="neu-input pe-1"
           placeholder="5000000"
           required

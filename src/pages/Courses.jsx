@@ -57,12 +57,16 @@ const Courses = () => {
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
-      body: JSON.stringify(newCourse),
+      body: JSON.stringify({
+        ...newCourse,
+        courseName: newCourse.courseName.trim(),
+        creator: newCourse.creator.trim(),
+        price: Number(newCourse.price),
+      }),
     }).then((res) => {
       if (res.status === 201) {
         res.json().then((data) => {
           setRecivedData((prev) => [data[0], ...prev]);
-          console.log(data);
         });
         resetNewCourse();
       } else {
@@ -95,7 +99,12 @@ const Courses = () => {
         "Content-Type": "application/json",
         Prefer: "return=representation",
       },
-      body: JSON.stringify(newCourse),
+      body: JSON.stringify({
+        ...newCourse,
+        courseName: newCourse.courseName.trim(),
+        creator: newCourse.creator.trim(),
+        price: Number(newCourse.price),
+      }),
     }).then((res) => {
       if (res.status === 200) {
         res.json().then((data) => {
@@ -111,17 +120,7 @@ const Courses = () => {
 
   return (
     <>
-      {/* <!----------------------------- toast nnotification -----------------------------> */}
-      <article className="hidden fixed top-5 left-5 z-50 neu-card w-70 toest text-center overflow-hidden">
-        <div className="progress h-3 rounded-card absolute bottom-0 left-0"></div>
-        <p id="progress-text" className="">
-          با موفقعیت دوره تازه ثبت شد
-        </p>
-      </article>
-
       <div className="flex min-w-0 flex-1 flex-col gap-8">
-        {/* <!------------------------------------ main ------------------------------------> */}
-
         <main className="flex flex-col gap-8">
           <div>
             {/* <!-- Recent content --> */}
@@ -221,13 +220,6 @@ const Courses = () => {
                 itemsPerPage={5}
                 paginatedCoures={(data) => setPaginatedCourses(data)}
               />
-
-              <div
-                className="flex gap-x-3 w-fit mx-auto mt-6"
-                id="pagination-container"
-              >
-                {/* <!-- Element Loaded From Js --> */}
-              </div>
             </section>
           </div>
         </main>

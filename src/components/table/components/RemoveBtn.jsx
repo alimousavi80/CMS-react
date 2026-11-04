@@ -19,7 +19,7 @@ const RemoveBtn = ({ data, onDelete, title }) => {
     >
       <p className="mb-8 text-center text-lg">
         {title === "دوره"
-          ? `آیا از حذف دوره ${data.CourseName} اطمینان دارید؟`
+          ? `آیا از حذف دوره ${data.courseName} اطمینان دارید؟`
           : `آیا از حذف کاربر ${data.fullName} اطمینان دارید؟`}
       </p>
     </Modal>
