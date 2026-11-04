@@ -12,6 +12,7 @@ import RemoveBtn from "../components/table/components/RemoveBtn";
 import Pagination from "../components/common/Pagination";
 import Modal from "../components/common/Modal";
 import AddCourseFields from "../components/features/coursespart/AddCourseFields";
+import toast from "react-hot-toast";
 
 const coursesTableHeaderCellData = [
   { id: 1, name: "شماره" },
@@ -65,11 +66,13 @@ const Courses = () => {
       }),
     }).then((res) => {
       if (res.status === 201) {
+        toast.success("دوره با موفقیت اضافه شد");
         res.json().then((data) => {
           setRecivedData((prev) => [data[0], ...prev]);
         });
         resetNewCourse();
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };
@@ -84,8 +87,10 @@ const Courses = () => {
       },
     }).then((res) => {
       if (res.status === 200) {
+        toast.success("دوره با موفقیت حذف شد");
         setRecivedData((prev) => prev.filter((item) => item.id !== courseId));
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };
@@ -107,6 +112,7 @@ const Courses = () => {
       }),
     }).then((res) => {
       if (res.status === 200) {
+        toast.success("دوره با موفقیت به روزرسانی شد");
         res.json().then((data) => {
           setRecivedData((prev) =>
             prev.map((item) => (item.id === courseId ? data[0] : item)),
@@ -114,6 +120,7 @@ const Courses = () => {
         });
         resetNewCourse();
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };

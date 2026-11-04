@@ -12,6 +12,7 @@ import Modal from "../components/common/Modal";
 import AddUserFields from "../components/features/userspart/AddUserFields";
 import UpdateUserBtn from "../components/table/components/UpdateUserBtn";
 import RemoveBtn from "../components/table/components/RemoveBtn";
+import toast from "react-hot-toast";
 
 const usersTableHeaderCellData = [
   { id: crypto.randomUUID(), name: "شماره" },
@@ -67,11 +68,13 @@ const Users = () => {
       }),
     }).then((res) => {
       if (res.status === 201) {
+        toast.success("کاربر با موفقیت اضافه شد");
         res.json().then((data) => {
           setRecivedData((prev) => [data[0], ...prev]);
         });
         resetNewUser();
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };
@@ -86,8 +89,10 @@ const Users = () => {
       },
     }).then((res) => {
       if (res.status === 200) {
+        toast.success("کاربر با موفقیت حذف شد");
         setRecivedData((prev) => prev.filter((item) => item.id !== userId));
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };
@@ -110,6 +115,7 @@ const Users = () => {
       }),
     }).then((res) => {
       if (res.status === 200) {
+        toast.success("کاربر با موفقیت به روز رسانی شد");
         res.json().then((data) => {
           setRecivedData((prev) =>
             prev.map((item) => (item.id === userId ? data[0] : item)),
@@ -117,6 +123,7 @@ const Users = () => {
         });
         resetNewUser();
       } else {
+        toast.error("خطایی رخ داده است");
       }
     });
   };
