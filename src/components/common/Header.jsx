@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import {
   IoSunnyOutline,
@@ -8,6 +8,15 @@ import {
 } from "react-icons/io5";
 
 const Header = () => {
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "light",
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   return (
     <>
       {/* <!---------------------------------- Top bar ----------------------------------> */}
@@ -56,7 +65,12 @@ const Header = () => {
 
         {/* <!-- change theme buttons --> */}
 
-        <button id="theme-toggle" type="button" className="neu-icon-btn">
+        <button
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          id="theme-toggle"
+          type="button"
+          className="neu-icon-btn"
+        >
           <IoSunnyOutline className="hidden dark:block size-7" />
 
           <IoMoonOutline className="dark:hidden size-7" />

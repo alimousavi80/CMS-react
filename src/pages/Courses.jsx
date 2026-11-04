@@ -62,6 +62,7 @@ const Courses = () => {
       if (res.status === 201) {
         res.json().then((data) => {
           setRecivedData((prev) => [data[0], ...prev]);
+          console.log(data);
         });
         resetNewCourse();
       } else {
