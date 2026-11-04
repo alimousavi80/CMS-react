@@ -5,9 +5,11 @@ import {
   IoMoonOutline,
   IoNotificationsOutline,
   IoMenuOutline,
+  IoClose,
 } from "react-icons/io5";
 
 const Header = () => {
+  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light",
   );
@@ -22,7 +24,10 @@ const Header = () => {
       {/* <!---------------------------------- Top bar ----------------------------------> */}
 
       <header className="flex items-center gap-6">
-        <div className="lg:hidden neu-icon-btn" id="bars-menu">
+        <div
+          className="lg:hidden neu-icon-btn"
+          onClick={() => setIsSideMenuOpen(true)}
+        >
           <IoMenuOutline className="size-7" />
         </div>
 
@@ -78,26 +83,30 @@ const Header = () => {
       </header>
       {/* <!----------------------------- Mobile Sidemenu -----------------------------> */}
       <div
-        id="overlay-mobile"
-        className="fixed opacity-0 inset-0 z-50 pointer-events-none transition-opacity bg-black/40 backdrop-blur-xs"
+        onClick={() => setIsSideMenuOpen(false)}
+        className={`fixed  inset-0 z-50  transition-opacity bg-black/40 backdrop-blur-xs lg:hidden
+        ${isSideMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
         <aside
-          className="transition-transform neu-card w-70 h-full absolute translate-x-70 lg:hidden"
-          id="side-menu-mobile"
+          onClick={(e) => e.stopPropagation()}
+          className={`transition-transform neu-card w-70 h-full absolute  lg:hidden ${isSideMenuOpen ? "translate-x-0" : "translate-x-70"}`}
         >
           <div className="flex items-center justify-between mb-10">
             <Link to="./" className="px-4 text-xl font-bold">
               پنل مدیریت
             </Link>
 
-            <div className="neu-icon-btn" id="close-mobile-menu-btn">
-              <svg className="size-7.5">
-                <use href="#x-mark-icon"></use>
-              </svg>
+            <div
+              onClick={() => setIsSideMenuOpen(false)}
+              className="neu-icon-btn"
+              id="close-mobile-menu-btn"
+            >
+              <IoClose className="size-7" />
             </div>
           </div>
           <nav className="flex flex-col gap-5">
             <NavLink
+              onClick={() => setIsSideMenuOpen(false)}
               to="/"
               className={({ isActive }) =>
                 `${isActive ? "neu-nav-item text-accent shadow-neu-inset" : "neu-nav-item"}`
@@ -106,6 +115,7 @@ const Header = () => {
               داشبورد
             </NavLink>
             <NavLink
+              onClick={() => setIsSideMenuOpen(false)}
               to="/courses"
               className={({ isActive }) =>
                 `${isActive ? "neu-nav-item text-accent shadow-neu-inset" : "neu-nav-item"}`
@@ -114,6 +124,7 @@ const Header = () => {
               دوره ها
             </NavLink>
             <NavLink
+              onClick={() => setIsSideMenuOpen(false)}
               to="/users"
               className={({ isActive }) =>
                 `${isActive ? "neu-nav-item text-accent shadow-neu-inset" : "neu-nav-item"}`
