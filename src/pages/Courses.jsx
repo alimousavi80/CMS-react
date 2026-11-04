@@ -28,9 +28,8 @@ const ANONKEY =
 const BASEURL = "https://yzacmxraccksppufpokc.supabase.co";
 
 const Courses = () => {
-  const allData = useLoaderData();
-  const [recivedData, setRecivedData] = useState(allData);
-  const [allCourses, setAllCourses] = useState([]);
+  const [recivedData, setRecivedData] = useState(useLoaderData());
+  const [paginatedCourses, setPaginatedCourses] = useState([]);
   const [newCourse, setNewCourse] = useState({
     courseName: "",
     creator: "",
@@ -162,7 +161,7 @@ const Courses = () => {
                     </TableHeadRow>
                   </TableHead>
                   <TableBody>
-                    {allCourses.map((item, index) => (
+                    {paginatedCourses.map((item, index) => (
                       <TableBodyRow key={item.id}>
                         <TableBodyCell className="px-4 py-3 font-medium">
                           {index + 1}
@@ -217,8 +216,8 @@ const Courses = () => {
 
               <Pagination
                 allCourses={recivedData}
-                itemsPerPage={3}
-                paginatedCoures={(data) => setAllCourses(data)}
+                itemsPerPage={5}
+                paginatedCoures={(data) => setPaginatedCourses(data)}
               />
 
               <div
