@@ -9,9 +9,8 @@
     <!-- preventing flash for changing theme -->
 
     <script>
-      const localTheme = localStorage.getItem("theme");
-      if (localTheme) {
-        document.documentElement.className = localTheme;
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
       }
     </script>
   </head>

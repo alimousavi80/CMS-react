@@ -1,214 +1,232 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useLoaderData } from "react-router";
+import Table from "../components/table/Table";
+import TableHead from "../components/table/elements/TableHead";
+import TableHeadRow from "../components/table/elements/TableHeadRow";
+import TableHeaderCell from "../components/table/elements/TableHeaderCell";
+import TableBody from "../components/table/elements/TableBody";
+import TableBodyRow from "../components/table/elements/TableBodyRow";
+import TableBodyCell from "../components/table/elements/TableBodyCell";
+import Pagination from "../components/common/Pagination";
+import Modal from "../components/common/Modal";
+import AddUserFields from "../components/features/userspart/AddUserFields";
+import UpdateUserBtn from "../components/table/components/UpdateUserBtn";
+import RemoveBtn from "../components/table/components/RemoveBtn";
+
+const usersTableHeaderCellData = [
+  { id: crypto.randomUUID(), name: "شماره" },
+  { id: crypto.randomUUID(), name: "نام نام خانوادگی" },
+  { id: crypto.randomUUID(), name: "یوزرنیم" },
+  { id: crypto.randomUUID(), name: "نقش" },
+  { id: crypto.randomUUID(), name: "تلفن همراه" },
+  { id: crypto.randomUUID(), name: "ایمیل" },
+  { id: crypto.randomUUID(), name: "ویرایش" },
+  { id: crypto.randomUUID(), name: "حذف" },
+];
+const ANONKEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6YWNteHJhY2Nrc3BwdWZwb2tjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTExMzY3MjUsImV4cCI6MjEwNjcxMjcyNX0.kEP8_cHV2uPuujkt_TvICmVd7y0H_U-KxrcQRAHIAjI";
+const BASEURL = "https://yzacmxraccksppufpokc.supabase.co";
 
 const Users = () => {
+  const [recivedData, setRecivedData] = useState(useLoaderData());
+
+  const [paginatedUsers, setPaginatedUsers] = useState([]);
+  const [newUser, setNewUser] = useState({
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    role: "commonuser",
+    userName: "",
+  });
+
+  const resetNewUser = () => {
+    setNewUser({
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      role: "commonuser",
+      userName: "",
+    });
+  };
+
+  const addNewUserHandler = () => {
+    // const userData = {
+    //   fullName: userFullName.value.trim(),
+    //   userName: userUserName.value.trim(),
+    //   role: role,
+    //   phoneNumber: +userPhoneNumber.value,
+    //   email: userEamil.value.trim(),
+    // };
+    fetch(`${BASEURL}/rest/v1/users`, {
+      method: "POST",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        ...newUser,
+        fullName: newUser.fullName.trim(),
+        userName: newUser.userName.trim(),
+        phoneNumber: Number(newUser.phoneNumber),
+      }),
+    }).then((res) => {
+      if (res.status === 201) {
+        res.json().then((data) => {
+          setRecivedData((prev) => [data[0], ...prev]);
+        });
+        resetNewUser();
+      } else {
+      }
+    });
+  };
+
+  const deleteUserHandler = (userId) => {
+    fetch(`${BASEURL}/rest/v1/users?id=eq.${userId}`, {
+      method: "DELETE",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        Prefer: "return=representation",
+      },
+    }).then((res) => {
+      if (res.status === 200) {
+        setRecivedData((prev) => prev.filter((item) => item.id !== userId));
+      } else {
+      }
+    });
+  };
+
+  const updateUserHandler = (userId) => {
+    fetch(`${BASEURL}/rest/v1/users?id=eq.${userId}`, {
+      method: "PATCH",
+      headers: {
+        apikey: ANONKEY,
+        Authorization: `Bearer ${ANONKEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        ...newUser,
+        fullName: newUser.fullName.trim(),
+        userName: newUser.userName.trim(),
+        phoneNumber: Number(newUser.phoneNumber),
+      }),
+    }).then((res) => {
+      if (res.status === 200) {
+        res.json().then((data) => {
+          setRecivedData((prev) =>
+            prev.map((item) => (item.id === userId ? data[0] : item)),
+          );
+        });
+        resetNewUser();
+      } else {
+      }
+    });
+  };
+
   return (
     <>
-      {/* <!------------------------------------ svg sprite ------------------------------------> */}
-
-      <svg className="hidden">
-        <symbol id="sun-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-            />
-          </svg>
-        </symbol>
-        <symbol id="moon-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-            />
-          </svg>
-        </symbol>
-        <symbol id="bell-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-            />
-          </svg>
-        </symbol>
-        <symbol id="x-mark-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 18 18 6M6 6l12 12"
-            />
-          </svg>
-        </symbol>
-        <symbol id="edit-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-            />
-          </svg>
-        </symbol>
-        <symbol id="trash-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-            />
-          </svg>
-        </symbol>
-        <symbol id="bars-3-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </symbol>
-      </svg>
-
-      {/* <!------------------------------------ modal ------------------------------------> */}
-
-      <div
-        id="modal-container"
-        className="hidden fixed inset-0 z-50 items-center justify-center bg-black/40 p-4 backdrop-blur-xs"
-      >
-        {/* <!-- loaded from js --> */}
-      </div>
-
-      {/* <!----------------------------- toast nnotification -----------------------------> */}
-      <article className="hidden fixed top-5 left-5 z-50 neu-card w-70 toest text-center overflow-hidden">
-        <div className="progress h-3 rounded-card absolute bottom-0 left-0"></div>
-        <p id="progress-text" className="">
-          {/* <!-- loaded from js --> */}
-        </p>
-      </article>
-
       <div className="flex min-w-0 flex-1 flex-col gap-8">
-        {/* <!------------------------------------ main ------------------------------------> */}
-
         <main className="flex flex-col gap-8">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-
-          {/* <!-- Stats --> */}
-          <section className="grid gap-8 grid-cols-2">
-            <div className="neu-card">
-              <p className="text-sm text-ink-muted">تعداد دوره ها</p>
-              <p className="mt-2 text-3xl font-bold" id="courses-count">
-                {/* <!-- loaded from js --> */}
-              </p>
-            </div>
-            <div className="neu-card">
-              <p className="text-sm text-ink-muted">تعداد کاربران</p>
-              <p className="mt-2 text-3xl font-bold" id="users-count">
-                {/* <!-- loaded from js --> */}
-              </p>
-            </div>
-          </section>
-
           <div>
             {/* <!-- Recent content --> */}
             <section className="neu-card xl:col-span-2">
               <div className="mb-6 flex items-center justify-between gap-4">
-                <h2 className="text-lg font-semibold">کاربران</h2>
-                <button type="button" id="open-modal-btn" className="neu-btn">
-                  افزودن کاربر
-                </button>
+                <h2 className="text-lg font-semibold">کابران اخیر</h2>
+                <Modal
+                  Triger={
+                    <button
+                      type="button"
+                      id="open-modal-btn"
+                      className="neu-btn"
+                    >
+                      افزودن کاربر
+                    </button>
+                  }
+                  title={"افزودن کابر جدید"}
+                  mainBtn={"افزودن"}
+                  onSubmit={addNewUserHandler}
+                  onClose={resetNewUser}
+                >
+                  <AddUserFields newUser={newUser} onChange={setNewUser} />
+                </Modal>
               </div>
 
               {/* <!----------------------------------- table -----------------------------------> */}
 
               <div className="neu-well overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="text-ink-muted text-center">
-                    <tr className="border-b border-ink/10">
-                      <th className="px-4 py-3 font-medium">شماره</th>
-                      <th className="px-4 py-3 font-medium">
-                        نام و نام خانوادگی
-                      </th>
-                      <th className="px-4 py-3 font-medium">یوزرنیم</th>
-                      <th className="px-4 py-3 font-medium">نقش</th>
-                      <th className="px-4 py-3 font-medium">تلفن همراه</th>
-                      <th className="px-4 py-3 font-medium">ایمیل</th>
-                      <th className="px-4 py-3 font-medium neu-chip-warning">
-                        ویرایش
-                      </th>
-                      <th className="px-4 py-3 font-medium neu-chip-delete">
-                        حذف
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    className="divide-y divide-ink/10 *:text-center"
-                    id="table-wrapper"
-                  >
-                    {/* <!-- loaded from js --> */}
-                  </tbody>
-                </table>
+                <Table>
+                  <TableHead>
+                    <TableHeadRow>
+                      {usersTableHeaderCellData.map((item) => (
+                        <TableHeaderCell key={item.id} data={item.name} />
+                      ))}
+                    </TableHeadRow>
+                  </TableHead>
+                  <TableBody>
+                    {paginatedUsers.map((item, index) => (
+                      <TableBodyRow key={item.id}>
+                        <TableBodyCell className="px-4 py-3 font-medium">
+                          {index + 1}
+                        </TableBodyCell>
+                        <TableBodyCell className="px-4 py-3 font-medium">
+                          {item.fullName}
+                        </TableBodyCell>
+                        <TableBodyCell className="px-4 py-3">
+                          {item.userName}
+                        </TableBodyCell>
+                        <TableBodyCell className="px-4 py-3">
+                          <span
+                            className={
+                              item.role === "commonuser"
+                                ? "neu-chip neu-chip-warning"
+                                : "neu-chip neu-chip-success"
+                            }
+                          >
+                            {item.role === "commonuser" ? "کاربر عادی" : "مدیر"}
+                          </span>
+                        </TableBodyCell>
+                        <TableBodyCell className="px-4 py-3 text-ink-muted">
+                          {item.phoneNumber}
+                        </TableBodyCell>
+                        <TableBodyCell className="px-4 py-3 text-ink-muted">
+                          {item.email}
+                        </TableBodyCell>
+                        <TableBodyCell>
+                          <UpdateUserBtn
+                            onUpdate={updateUserHandler}
+                            data={item}
+                            newUser={newUser}
+                            onChange={setNewUser}
+                            onClose={resetNewUser}
+                          />
+                        </TableBodyCell>
+                        <TableBodyCell>
+                          <RemoveBtn
+                            data={item}
+                            onDelete={deleteUserHandler}
+                            title="کاربر"
+                          />
+                        </TableBodyCell>
+                      </TableBodyRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
 
               {/* <!-- pagination --> */}
 
-              <div
-                className="flex gap-x-3 w-fit mx-auto mt-6"
-                id="pagination-container"
-              >
-                {/* <!-- Element Loaded From Js --> */}
-              </div>
+              <Pagination
+                allCourses={recivedData}
+                itemsPerPage={5}
+                paginatedCoures={(data) => setPaginatedUsers(data)}
+              />
             </section>
           </div>
         </main>
       </div>
-
-      {/* <script src="./js/themeHandler.js"></script>
-        <script src="./js/shared.js" type="module"></script>
-        <script src="./js/users.js" type="module"></script> */}
     </>
   );
 };

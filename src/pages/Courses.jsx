@@ -8,7 +8,7 @@ import TableBody from "../components/table/elements/TableBody";
 import TableBodyRow from "../components/table/elements/TableBodyRow";
 import TableBodyCell from "../components/table/elements/TableBodyCell";
 import UpdateCourseBtn from "../components/table/components/UpdateCourseBtn";
-import RemoveCourseBtn from "../components/table/components/RemoveCourseBtn";
+import RemoveBtn from "../components/table/components/RemoveBtn";
 import Pagination from "../components/common/Pagination";
 import Modal from "../components/common/Modal";
 import AddCourseFields from "../components/features/coursespart/AddCourseFields";
@@ -202,9 +202,10 @@ const Courses = () => {
                           />
                         </TableBodyCell>
                         <TableBodyCell>
-                          <RemoveCourseBtn
+                          <RemoveBtn
                             data={item}
                             onDelete={deleteCourseHandler}
+                            title="دوره"
                           />
                         </TableBodyCell>
                       </TableBodyRow>

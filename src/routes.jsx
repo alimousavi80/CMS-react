@@ -65,6 +65,7 @@ const router = createHashRouter([
       {
         path: "/users",
         element: <Users />,
+        loader: fetchUsersData,
       },
     ],
   },
