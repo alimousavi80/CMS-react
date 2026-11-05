@@ -38,7 +38,7 @@ const UpdateCourseBtn = ({ newCourse, onChange, onUpdate, data, onClose }) => {
         })
       }
     >
-      <form id="course-form" className="flex flex-col gap-6 w-sm" noValidate>
+      <form id="course-form" className="flex flex-col gap-6 min-w-xs sm:min-w-sm" noValidate>
         <div className="flex flex-col gap-2 items-start">
           <label htmlFor="course-name" className="text-sm font-medium">
             نام دوره

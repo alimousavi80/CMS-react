@@ -17,7 +17,7 @@ const RemoveBtn = ({ data, onDelete, title }) => {
       title={`حذف ${title}`}
       onSubmit={() => onDelete(data.id)}
     >
-      <p className="mb-8 text-center text-lg">
+      <p className="mb-8 text-center text-lg max-w-md">
         {title === "دوره"
           ? `آیا از حذف دوره ${data.courseName} اطمینان دارید؟`
           : `آیا از حذف کاربر ${data.fullName} اطمینان دارید؟`}

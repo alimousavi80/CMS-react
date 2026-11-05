@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 
-const Pagination = ({ allCourses, itemsPerPage, paginatedCoures }) => {
+const Pagination = ({ allData, itemsPerPage, paginatedData }) => {
   const [currentCount, serCurrentCount] = useState(1);
 
-  let allCount = allCourses.length;
+  let allCount = allData.length;
 
   let shownCountInPage = Math.ceil(allCount / itemsPerPage);
 
   useEffect(() => {
     const finishIndex = itemsPerPage * currentCount;
     const startIndex = finishIndex - itemsPerPage;
-    const paginatedCourses = allCourses.slice(startIndex, finishIndex);
-    paginatedCoures(paginatedCourses);
-  }, [currentCount, allCourses, itemsPerPage]);
+    const paginatedCourses = allData.slice(startIndex, finishIndex);
+    paginatedData(paginatedCourses);
+  }, [currentCount, allData, itemsPerPage]);
 
   return (
     <>

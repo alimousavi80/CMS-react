@@ -10,7 +10,7 @@ const AddUserFields = ({ newUser, onChange }) => {
   };
 
   return (
-    <form id="course-form" className="flex flex-col gap-3 min-w-xs" noValidate>
+    <form id="course-form" className="flex flex-col gap-3 min-w-xs sm:min-w-sm" noValidate>
       <div className="flex flex-col gap-2">
         <label htmlFor="course-name" className="text-sm font-medium">
           نام و نام خانوادگی

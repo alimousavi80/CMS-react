@@ -173,10 +173,18 @@ const Courses = () => {
                         <TableBodyCell className="px-4 py-3 font-medium">
                           {index + 1}
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3 font-medium">
+                        <TableBodyCell
+                          className="px-4 py-3 font-medium"
+                          limit
+                          title={item.courseName}
+                        >
                           {item.courseName}
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3">
+                        <TableBodyCell
+                          className="px-4 py-3"
+                          limit
+                          title={item.creator}
+                        >
                           {item.creator}
                         </TableBodyCell>
                         <TableBodyCell className="px-4 py-3">
@@ -190,7 +198,11 @@ const Courses = () => {
                             {item.status}
                           </span>
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3 text-ink-muted">
+                        <TableBodyCell
+                          className="px-4 py-3 text-ink-muted"
+                          limit
+                          title={item.price.toLocaleString()}
+                        >
                           {item.price.toLocaleString()} تومان
                         </TableBodyCell>
                         <TableBodyCell className="px-4 py-3 text-ink-muted">
@@ -223,9 +235,9 @@ const Courses = () => {
               {/* <!-- pagination --> */}
 
               <Pagination
-                allCourses={recivedData}
+                allData={recivedData}
                 itemsPerPage={5}
-                paginatedCoures={(data) => setPaginatedCourses(data)}
+                paginatedData={(data) => setPaginatedCourses(data)}
               />
             </section>
           </div>

@@ -173,10 +173,18 @@ const Users = () => {
                         <TableBodyCell className="px-4 py-3 font-medium">
                           {index + 1}
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3 font-medium">
+                        <TableBodyCell
+                          className="px-4 py-3 font-medium"
+                          limit
+                          title={item.fullName}
+                        >
                           {item.fullName}
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3">
+                        <TableBodyCell
+                          className="px-4 py-3"
+                          limit
+                          title={item.userName}
+                        >
                           {item.userName}
                         </TableBodyCell>
                         <TableBodyCell className="px-4 py-3">
@@ -190,10 +198,18 @@ const Users = () => {
                             {item.role === "commonuser" ? "کاربر عادی" : "مدیر"}
                           </span>
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3 text-ink-muted">
+                        <TableBodyCell
+                          className="px-4 py-3 text-ink-muted"
+                          limit
+                          title={item.phoneNumber}
+                        >
                           {item.phoneNumber}
                         </TableBodyCell>
-                        <TableBodyCell className="px-4 py-3 text-ink-muted">
+                        <TableBodyCell
+                          className="px-4 py-3 text-ink-muted"
+                          limit
+                          title={item.email}
+                        >
                           {item.email}
                         </TableBodyCell>
                         <TableBodyCell>
@@ -221,9 +237,9 @@ const Users = () => {
               {/* <!-- pagination --> */}
 
               <Pagination
-                allCourses={recivedData}
+                allData={recivedData}
                 itemsPerPage={5}
-                paginatedCoures={(data) => setPaginatedUsers(data)}
+                paginatedData={(data) => setPaginatedUsers(data)}
               />
             </section>
           </div>
