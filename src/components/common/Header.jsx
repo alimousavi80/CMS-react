@@ -3,10 +3,10 @@ import { Link, NavLink } from "react-router";
 import {
   IoSunnyOutline,
   IoMoonOutline,
-  IoNotificationsOutline,
   IoMenuOutline,
   IoClose,
 } from "react-icons/io5";
+import Notification from "./Notification";
 
 const Header = () => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
@@ -37,37 +37,9 @@ const Header = () => {
           placeholder="Search posts, pages, media"
         />
 
-        {/* <!-- notification buttons --> */}
+        {/* <!-- notification --> */}
 
-        {/* <!-- bell notification --> */}
-
-        <div className="relative" id="notification-btn">
-          <div className="neu-icon-btn">
-            <IoNotificationsOutline className="size-7" />
-          </div>
-
-          {/* <!-- notification counts --> */}
-
-          <div className="absolute -bottom-1 -right-1 bg-surface min-w-5.5 min-h-5.5 rounded-full flex items-center justify-center">
-            3
-          </div>
-
-          {/* <!-- notification box --> */}
-
-          <div
-            className="neu-card absolute top-13 hidden"
-            id="notification-box"
-          >
-            <ul className="space-y-2 min-w-50 *:max-w-50 *:break-words *:line-clamp-2 *:overflow-y-auto">
-              <li className="neu-well">
-                لطفا فلان کار را انجام بدهید و دوره فلان را به سایت اضافه کنید .
-              </li>
-              <li className="neu-well">دوره ری اکت را به روز رسانی کنید</li>
-              <li className="neu-well">به کانت ها پاسخ بدهید</li>
-            </ul>
-          </div>
-        </div>
-
+        <Notification />
         {/* <!-- change theme buttons --> */}
 
         <button
