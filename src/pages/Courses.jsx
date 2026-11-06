@@ -64,17 +64,21 @@ const Courses = () => {
         creator: newCourse.creator.trim(),
         price: Number(newCourse.price),
       }),
-    }).then((res) => {
-      if (res.status === 201) {
-        toast.success("دوره با موفقیت اضافه شد");
-        res.json().then((data) => {
-          setRecivedData((prev) => [data[0], ...prev]);
-        });
-        resetNewCourse();
-      } else {
-        toast.error("خطایی رخ داده است");
-      }
-    });
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success("دوره با موفقیت اضافه شد");
+          res.json().then((data) => {
+            setRecivedData((prev) => [data[0], ...prev]);
+          });
+          resetNewCourse();
+        } else {
+          toast.error("افزودن دوره نا موفق بود");
+        }
+      })
+      .catch(() => {
+        toast.error("ارتباط با سرور بر قرار نشد");
+      });
   };
 
   const deleteCourseHandler = (courseId) => {
@@ -85,14 +89,18 @@ const Courses = () => {
         Authorization: `Bearer ${ANONKEY}`,
         Prefer: "return=representation",
       },
-    }).then((res) => {
-      if (res.status === 200) {
-        toast.success("دوره با موفقیت حذف شد");
-        setRecivedData((prev) => prev.filter((item) => item.id !== courseId));
-      } else {
-        toast.error("خطایی رخ داده است");
-      }
-    });
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("دوره با موفقیت حذف شد");
+          setRecivedData((prev) => prev.filter((item) => item.id !== courseId));
+        } else {
+          toast.error("حذف دوره نا موفق بود");
+        }
+      })
+      .catch(() => {
+        toast.error("ارتباط با سرور بر قرار نشد");
+      });
   };
 
   const updateCourseHandler = (courseId) => {
@@ -110,19 +118,23 @@ const Courses = () => {
         creator: newCourse.creator.trim(),
         price: Number(newCourse.price),
       }),
-    }).then((res) => {
-      if (res.status === 200) {
-        toast.success("دوره با موفقیت به روزرسانی شد");
-        res.json().then((data) => {
-          setRecivedData((prev) =>
-            prev.map((item) => (item.id === courseId ? data[0] : item)),
-          );
-        });
-        resetNewCourse();
-      } else {
-        toast.error("خطایی رخ داده است");
-      }
-    });
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("دوره با موفقیت به روزرسانی شد");
+          res.json().then((data) => {
+            setRecivedData((prev) =>
+              prev.map((item) => (item.id === courseId ? data[0] : item)),
+            );
+          });
+          resetNewCourse();
+        } else {
+          toast.error("ویرایش دوره نا موفق بود");
+        }
+      })
+      .catch(() => {
+        toast.error("ارتباط با سرور بر قرار نشد");
+      });
   };
 
   return (
