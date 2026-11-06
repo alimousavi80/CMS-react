@@ -13,6 +13,7 @@ import Pagination from "../components/common/Pagination";
 import Modal from "../components/common/Modal";
 import AddCourseFields from "../components/features/coursespart/AddCourseFields";
 import toast from "react-hot-toast";
+import useTitle from "../hooks/useTitle";
 
 const coursesTableHeaderCellData = [
   { id: 1, name: "شماره" },
@@ -38,6 +39,8 @@ const Courses = () => {
     status: "در حال ضبط",
     category: "فرانت اند",
   });
+
+  useTitle("courses");
 
   const resetNewCourse = () => {
     setNewCourse({

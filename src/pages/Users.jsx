@@ -13,6 +13,7 @@ import AddUserFields from "../components/features/userspart/AddUserFields";
 import UpdateUserBtn from "../components/table/components/UpdateUserBtn";
 import RemoveBtn from "../components/table/components/RemoveBtn";
 import toast from "react-hot-toast";
+import useTitle from "../hooks/useTitle";
 
 const usersTableHeaderCellData = [
   { id: crypto.randomUUID(), name: "شماره" },
@@ -30,7 +31,6 @@ const BASEURL = "https://yzacmxraccksppufpokc.supabase.co";
 
 const Users = () => {
   const [recivedData, setRecivedData] = useState(useLoaderData());
-
   const [paginatedUsers, setPaginatedUsers] = useState([]);
   const [newUser, setNewUser] = useState({
     fullName: "",
@@ -39,6 +39,7 @@ const Users = () => {
     role: "commonuser",
     userName: "",
   });
+  useTitle("users");
 
   const resetNewUser = () => {
     setNewUser({

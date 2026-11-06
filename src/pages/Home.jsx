@@ -8,9 +8,11 @@ import {
   XAxis,
   Tooltip,
 } from "recharts";
+import useTitle from "../hooks/useTitle";
 
 const Home = () => {
   const { coursesData, userData } = useLoaderData();
+  useTitle("dashboard");
 
   const chartData = [
     { name: "دوره ها", value: coursesData.length },
