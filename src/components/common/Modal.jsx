@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import ModalFooter from "./components/ModalFooter";
 import ModalHeader from "./components/ModalHeader";
+import useToggle from "../../hooks/useToggle";
 
 const Modal = ({
   Triger,
@@ -11,14 +11,14 @@ const Modal = ({
   onClose,
   onOpen,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, toggle] = useToggle(false);
   const openModal = () => {
     onOpen?.();
-    setIsOpen(true);
+    toggle();
   };
   const closeModal = () => {
     onClose?.();
-    setIsOpen(false);
+    toggle();
   };
 
   return (
