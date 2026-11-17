@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import Modal from "../../common/Modal";
 import { FiEdit } from "react-icons/fi";
+import updateUserReducer from "../../../reducers/updateUserReducer";
+import {
+  FULL_NAME,
+  PHONE_NUMBER,
+  USERNAME,
+  RESET,
+  ROLE,
+  EMAIL,
+} from "../../../actions/users";
 
 const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
-  const inputChangeHandler = (key, value) => {
-    const user = {
-      ...newUser,
-      [key]: value,
-    };
+  const [user, dispach] = useReducer(updateUserReducer, {
+    fullName: data.fullName,
+    email: data.email,
+    phoneNumber: data.phoneNumber,
+    role: data.role,
+    userName: data.userName,
+  });
+
+  useEffect(() => {
     onChange(user);
-  };
+  }, [user]);
 
   const Triger = () => {
     return (
@@ -28,15 +41,17 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
         onUpdate(data.id);
       }}
       onClose={onClose}
-      onOpen={() =>
-        onChange({
+      onOpen={() => {
+        const init = {
           fullName: data.fullName,
           email: data.email,
           phoneNumber: data.phoneNumber,
           role: data.role,
           userName: data.userName,
-        })
-      }
+        };
+        onChange(init);
+        dispach({ type: RESET, payload: init });
+      }}
     >
       <form
         id="course-form"
@@ -50,7 +65,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
           <input
             name="fullName"
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value);
+              dispach({ type: FULL_NAME, payload: e.target.value });
             }}
             id="course-name"
             value={newUser.fullName}
@@ -67,7 +82,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
           <input
             name="userName"
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value);
+              dispach({ type: USERNAME, payload: e.target.value });
             }}
             id="user-name"
             value={newUser.userName}
@@ -84,7 +99,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
           </label>
           <input
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value);
+              dispach({ type: EMAIL, payload: e.target.value });
             }}
             name="email"
             value={newUser.email}
@@ -101,7 +116,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
           </label>
           <input
             onChange={(e) => {
-              inputChangeHandler(e.target.name, e.target.value);
+              dispach({ type: PHONE_NUMBER, payload: e.target.value });
             }}
             name="phoneNumber"
             value={newUser.phoneNumber}
@@ -122,7 +137,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
             <label>
               <input
                 onChange={(e) => {
-                  inputChangeHandler(e.target.name, e.target.value);
+                  dispach({ type: ROLE, payload: e.target.value });
                 }}
                 type="radio"
                 name="role"
@@ -140,7 +155,7 @@ const UpdateUserBtn = ({ newUser, onChange, onUpdate, data, onClose }) => {
             <label>
               <input
                 onChange={(e) => {
-                  inputChangeHandler(e.target.name, e.target.value);
+                  dispach({ type: ROLE, payload: e.target.value });
                 }}
                 type="radio"
                 name="role"

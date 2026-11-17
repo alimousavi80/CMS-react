@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import { COURSE_NAME, CREATOR, PRICE, STATUS } from "../../../actions/courses";
+import { courseReducer } from "../../../reducers/courses";
 
-const AddCourseFields = ({ newCourse, onChange }) => {
-  const inputChangeHandler = (key, value) => {
-    const Course = {
-      ...newCourse,
-      [key]: value,
-    };
-    onChange(Course);
-  };
+const AddCourseFields = ({ onChange }) => {
+  const [course, dispach] = useReducer(courseReducer, {
+    courseName: "",
+    creator: "",
+    price: "",
+    status: "",
+    category: "فرانت اند",
+  });
+
+  useEffect(() => {
+    onChange(course);
+  }, [course]);
 
   const [priceInWords, setPriceInWords] = useState();
 
@@ -110,10 +116,10 @@ const AddCourseFields = ({ newCourse, onChange }) => {
         </label>
         <input
           name="courseName"
-          onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
-          }}
-          value={newCourse.courseName}
+          value={course.courseName}
+          onChange={(e) =>
+            dispach({ type: COURSE_NAME, payload: e.target.value })
+          }
           type="text"
           className="neu-input"
           placeholder="مثلاً: آموزش ری‌اکت"
@@ -127,10 +133,8 @@ const AddCourseFields = ({ newCourse, onChange }) => {
           مدرس
         </label>
         <input
-          onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
-          }}
-          value={newCourse.creator}
+          onChange={(e) => dispach({ type: CREATOR, payload: e.target.value })}
+          value={course.creator}
           name="creator"
           type="text"
           className="neu-input"
@@ -145,11 +149,11 @@ const AddCourseFields = ({ newCourse, onChange }) => {
           قیمت
         </label>
         <input
-          value={newCourse.price}
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
+            dispach({ type: PRICE, payload: e.target.value });
             priceCounter(e.target.value);
           }}
+          value={course.price}
           name="price"
           type="number"
           inputMode="numeric"
@@ -173,9 +177,9 @@ const AddCourseFields = ({ newCourse, onChange }) => {
         <div className="flex gap-4">
           <label>
             <input
-              onChange={(e) => {
-                inputChangeHandler(e.target.name, e.target.value);
-              }}
+              onChange={(e) =>
+                dispach({ type: STATUS, payload: e.target.value })
+              }
               type="radio"
               name="status"
               value="تکمیل شده"
@@ -189,9 +193,9 @@ const AddCourseFields = ({ newCourse, onChange }) => {
 
           <label>
             <input
-              onChange={(e) => {
-                inputChangeHandler(e.target.name, e.target.value);
-              }}
+              onChange={(e) =>
+                dispach({ type: STATUS, payload: e.target.value })
+              }
               type="radio"
               name="status"
               value="در حال ضبط"

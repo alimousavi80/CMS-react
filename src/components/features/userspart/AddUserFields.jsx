@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import {
+  FULL_NAME,
+  EMAIL,
+  PHONE_NUMBER,
+  ROLE,
+  USERNAME,
+} from "../../../actions/users";
+import userReducer from "../../../reducers/userReducer";
 
 const AddUserFields = ({ newUser, onChange }) => {
-  const inputChangeHandler = (key, value) => {
-    const User = {
-      ...newUser,
-      [key]: value,
-    };
-    onChange(User);
-  };
+  const [user, dispach] = useReducer(userReducer, {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    role: "commonuser",
+    userName: "",
+  });
+
+  useEffect(() => {
+    onChange(user);
+  }, [user]);
 
   return (
-    <form id="course-form" className="flex flex-col gap-3 min-w-xs sm:min-w-sm" noValidate>
+    <form
+      id="course-form"
+      className="flex flex-col gap-3 min-w-xs sm:min-w-sm"
+      noValidate
+    >
       <div className="flex flex-col gap-2">
         <label htmlFor="course-name" className="text-sm font-medium">
           نام و نام خانوادگی
@@ -18,7 +34,7 @@ const AddUserFields = ({ newUser, onChange }) => {
         <input
           name="fullName"
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
+            dispach({ type: FULL_NAME, payload: e.target.value });
           }}
           value={newUser.fullName}
           type="text"
@@ -35,7 +51,7 @@ const AddUserFields = ({ newUser, onChange }) => {
         <input
           name="userName"
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
+            dispach({ type: USERNAME, payload: e.target.value });
           }}
           value={newUser.userName}
           type="text"
@@ -51,7 +67,7 @@ const AddUserFields = ({ newUser, onChange }) => {
         </label>
         <input
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value.trim());
+            dispach({ type: EMAIL, payload: e.target.value });
           }}
           value={newUser.email}
           name="email"
@@ -69,7 +85,7 @@ const AddUserFields = ({ newUser, onChange }) => {
         <input
           value={newUser.phoneNumber}
           onChange={(e) => {
-            inputChangeHandler(e.target.name, e.target.value);
+            dispach({ type: PHONE_NUMBER, payload: e.target.value });
           }}
           name="phoneNumber"
           type="number"
@@ -85,13 +101,14 @@ const AddUserFields = ({ newUser, onChange }) => {
           <label>
             <input
               onChange={(e) => {
-                inputChangeHandler(e.target.name, e.target.value);
+                dispach({ type: ROLE, payload: e.target.value });
               }}
               type="radio"
               name="role"
               value="commonuser"
               className="peer sr-only"
               required
+              checked={newUser.role === "commonuser"}
             />
             <span className="neu-chip neu-chip-warning cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent">
               کاربر عادی
@@ -101,12 +118,13 @@ const AddUserFields = ({ newUser, onChange }) => {
           <label>
             <input
               onChange={(e) => {
-                inputChangeHandler(e.target.name, e.target.value);
+                dispach({ type: ROLE, payload: e.target.value });
               }}
               type="radio"
               name="role"
               value="admin"
               className="peer sr-only"
+              checked={newUser.role === "admin"}
             />
             <span className="neu-chip neu-chip-success cursor-pointer px-4 py-2 text-sm opacity-60 peer-checked:opacity-100 peer-checked:shadow-neu-inset peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-accent">
               مدیر

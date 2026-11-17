@@ -164,10 +164,7 @@ const Courses = () => {
                   onSubmit={addNewCourseHandler}
                   onClose={resetNewCourse}
                 >
-                  <AddCourseFields
-                    newCourse={newCourse}
-                    onChange={setNewCourse}
-                  />
+                  <AddCourseFields onChange={setNewCourse} />
                 </Modal>
               </div>
 
